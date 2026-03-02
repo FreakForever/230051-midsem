@@ -1,0 +1,232 @@
+{
+  "student_metadata": {
+    "name": "Ashwin Sathiyamoorthy",
+    "roll_number": "230051",
+    "course": "Advanced Machine Learning",
+    "exam": "Mid-Semester Examination",
+    "part": "Part A",
+    "submission_date": "2026-03-03"
+  },
+
+  "llm_tools_used": [
+    {
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic"
+    }
+  ],
+
+  "full_llm_interaction_log": [
+    {
+      "interaction_id": 1,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Initial paper selection guidance across all three allowed ML fields",
+      "prompt": "i need some papers recommendation from time series",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Claude provided four time series paper candidates: DynaMMo (KDD 2009), Fast Mining and Forecasting (KDD 2012), Reduced-Rank HMMs (AISTATS 2010), and Variational GPDS (NeurIPS 2011). This gave me a structured starting point to evaluate which paper was most feasible for reproduction.",
+      "student_verification": "I cross-checked the venues against the CORE portal (portal.core.edu.au) and confirmed KDD is listed as CORE A*. I also verified DynaMMo exists on ACM Digital Library at dl.acm.org/doi/10.1145/1557019.1557078.",
+      "confidence_level": 4
+    },
+    {
+      "interaction_id": 2,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Getting full citations and links for the recommended time series papers",
+      "prompt": "give me the citation of the respective time series paper with links",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude provided full APA and BibTeX citations for DynaMMo, Fast Mining and Forecasting, and Reduced-Rank HMMs, along with ACM DL links, free PDF links, and GitHub repo links. This helped me verify the papers were real and accessible.",
+      "student_verification": "I accessed the ACM Digital Library page for DynaMMo and confirmed the paper details match: Li, McCann, Pollard, Faloutsos, KDD 2009, pages 507-516. I also found the PDF on the CMU website.",
+      "confidence_level": 5
+    },
+    {
+      "interaction_id": 3,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Checking if ARIMA vs Neural Network weather forecasting paper qualifies",
+      "prompt": "Comparison between ARIMA and ANN Models Used in Short-Term Wind Speed Forecasting but this comes under icdm right?",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude clearly explained that this paper was published in APPEEC 2011 (an electrical engineering conference), not ICDM, and that it is a comparison/benchmark paper which is explicitly banned by the exam rules. This saved me from making a serious mistake.",
+      "student_verification": "I searched for the paper on Google Scholar and confirmed it appears in the 2011 Asia-Pacific Power and Energy Engineering Conference (APPEEC), not in any CORE A* venue.",
+      "confidence_level": 5
+    },
+    {
+      "interaction_id": 4,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Checking feasibility of Matrix Autoregressive (MAR) model paper",
+      "prompt": "Time Series Modeling using a Matrix Auto-Regressive (MAR) Model what about this paper",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude identified that the MAR model was proposed in 2021 (Chen, Xiao and Yang, Journal of Econometrics), not during 2009-2012, making it completely ineligible. This prevented me from selecting a non-existent paper for the exam period.",
+      "student_verification": "I searched arXiv and found the MAR model preprint is arXiv:1812.08916, submitted in 2018. The formal publication is from 2021. This confirms it does not fall in the 2009-2012 range required by the exam.",
+      "confidence_level": 5
+    },
+    {
+      "interaction_id": 5,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Verifying three AI-suggested papers (Online LDA, MKL CVPR, Group-Specific Time Series)",
+      "prompt": "Online Learning for Latent Dirichlet Allocation (2010), Multiple Kernel Learning for Image Classification (2010), Automatic Discovery of Group-Specific Models from Heterogeneous Time Series (2012) what about in these papers",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude identified that Online LDA is borderline (Dirichlet, not Gaussian), the MKL CVPR 2010 paper by Jianxin Wu could not be verified as existing, and the KDD 2012 time series paper returned zero results across all databases. This was critical in preventing me from selecting fabricated or misattributed papers.",
+      "student_verification": "I searched Google Scholar for Jianxin Wu CVPR 2010 and found no matching paper. I also searched ACM DL for the Group-Specific Models KDD 2012 paper and found no results. Claude's warning was accurate.",
+      "confidence_level": 5
+    },
+    {
+      "interaction_id": 6,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Understanding all ML concepts used in DynaMMo in depth",
+      "prompt": "DynaMMo — Li et al., 2009 what is the machine learning concepts used in it",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude gave a detailed breakdown of the six ML concepts in DynaMMo: Linear Dynamical System (LDS), Autoregressive (AR) modeling, Kalman Filter (forward pass), Kalman Smoother/RTS Smoother (backward pass), EM Algorithm (E-step and M-step), and missing value imputation. This gave me deep understanding of the paper's methodology.",
+      "student_verification": "I verified the Kalman Filter equations and EM update rules against Bishop's Pattern Recognition and Machine Learning textbook (Chapter 13, Linear Dynamical Systems). The equations match.",
+      "confidence_level": 4
+    },
+    {
+      "interaction_id": 7,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Finding official and alternative GitHub repositories for DynaMMo",
+      "prompt": "give me the implementation code repo if there is any for the Dynammo code",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude identified the official MATLAB repo by Lei Li at github.com/lileicc/dynammo, the pykalman Python library, and pydlm as alternatives. This confirmed the paper is reproducible and has active code.",
+      "student_verification": "I visited github.com/lileicc/dynammo and confirmed it exists, has MATLAB code for LDS with EM, and includes missing value recovery scripts. The repo has been starred and is publicly accessible.",
+      "confidence_level": 5
+    },
+    {
+      "interaction_id": 8,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Getting a complete Python reproduction of DynaMMo from scratch",
+      "prompt": "but how do i reproduce the paper in python",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude wrote a complete Python reproduction of DynaMMo using only NumPy, SciPy, and Matplotlib — no GPU, no special libraries. The code implements the full LDS class with Kalman Filter, RTS Smoother, EM algorithm, imputation, forecasting, and comparison against baselines (mean fill, linear interpolation). DynaMMo achieved RMSE of 0.5016 vs 0.7334 for mean fill — confirming the paper's claims.",
+      "student_verification": "I ran the code locally on my laptop (CPU only) and confirmed it executes in under 5 seconds. The EM log-likelihood decreases monotonically in the first iterations and the imputation RMSE is lower than both baselines, consistent with the paper's claims.",
+      "confidence_level": 4
+    },
+    {
+      "interaction_id": 9,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Understanding what dataset is used in the reproduction code",
+      "prompt": "what is the dataset u used in the code",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Claude clarified that the reproduction used synthetic data generated from a true LDS (T=200, d=5 sequences, k=2 latent factors, 15% missing rate), and explained that the real paper uses CMU Motion Capture and Chlorine Water Sensor datasets. Claude also suggested UCI Air Quality as a real-world substitute.",
+      "student_verification": "I confirmed CMU Motion Capture data is freely available at mocap.cs.cmu.edu and UCI Air Quality dataset is downloadable from the UCI ML Repository.",
+      "confidence_level": 4
+    },
+    {
+      "interaction_id": 10,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Formulating the motivation for selecting DynaMMo for the Part A submission",
+      "prompt": "what is the motivation in choosing the paper",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Claude provided seven structured motivation points covering real-world relevance, richness of ML concepts, method alignment with exam categories, CORE A* venue status, reproducibility advantages, measurable results, and citation impact. I used this to structure my own understanding and refined the motivation in my own words.",
+      "student_verification": "I independently verified that KDD is CORE A* via portal.core.edu.au, confirmed DynaMMo's Google Scholar citation count, and validated that the EM + Kalman Filter framework is discussed in standard ML textbooks like Bishop (2006) and Murphy (2012).",
+      "confidence_level": 4
+    },
+    {
+      "interaction_id": 11,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Checking availability of all papers against classmates' selections",
+      "prompt": "these are the existing papers already chosen need apart from [list of 40+ taken papers]",
+      "llm_response_used": "Yes",
+      "how_it_helped": "Claude cross-referenced the entire taken papers list against available time series, GMM, and SVM options, confirming DynaMMo was not taken by any classmate. It also identified LCGMM (AAAI 2010) and BMRM (JMLR 2010) as backup options.",
+      "student_verification": "I manually scanned the full taken papers list provided in the exam response sheet and confirmed DynaMMo (Li et al., KDD 2009) does not appear anywhere in the list.",
+      "confidence_level": 5
+    },
+    {
+      "interaction_id": 12,
+      "date": "2026-03-02",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic",
+      "purpose": "Checking GitHub availability for LCGMM and BMRM as backup options",
+      "prompt": "give me the github repo available for these 2 papers GMM/EM LCGMM AAAI 2010 and SVM Bundle Methods Teo et al JMLR 2010",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Claude confirmed that LCGMM only has a MATLAB code page on the ZJU lab website (no GitHub) and BMRM has a C++ page and an R CRAN package but no Python GitHub. This confirmed DynaMMo is superior in terms of reproducibility.",
+      "student_verification": "I searched GitHub directly for LCGMM and BMRM Python repositories. The search confirmed no official Python repos exist for either paper, validating Claude's assessment.",
+      "confidence_level": 4
+    }
+  ],
+
+  "top_5_prompts": [
+    {
+      "rank": 1,
+      "interaction_id": 5,
+      "prompt": "Online Learning for Latent Dirichlet Allocation (2010), Multiple Kernel Learning for Image Classification (2010), Automatic Discovery of Group-Specific Models from Heterogeneous Time Series (2012) what about in these papers",
+      "why_important": "This was the most critical prompt because it prevented me from selecting a fabricated or unverifiable paper. Claude's verification showed that two of these three papers either do not exist or cannot be confirmed in any academic database. Selecting a non-existent paper would have led to immediate disqualification. This interaction taught me to always verify paper existence independently before committing."
+    },
+    {
+      "rank": 2,
+      "interaction_id": 6,
+      "prompt": "DynaMMo — Li et al., 2009 what is the machine learning concepts used in it",
+      "why_important": "This prompt gave me the deepest understanding of the paper's methodology. Understanding the six ML concepts (LDS, AR model, Kalman Filter, RTS Smoother, EM Algorithm, missing value imputation) is essential for Parts B and C where I will need to explain inference procedures, derive equations, and justify design choices without LLM assistance. This interaction formed the foundation of my technical understanding."
+    },
+    {
+      "rank": 3,
+      "interaction_id": 8,
+      "prompt": "but how do i reproduce the paper in python",
+      "why_important": "The exam explicitly requires CPU-only reproduction on a personal laptop. This prompt confirmed that DynaMMo is fully reproducible using only NumPy, SciPy, and Matplotlib — standard libraries available on any laptop. The working code and quantitative results (RMSE 0.5016 vs baselines) gave me confidence that I can actually run experiments for Parts B and C, which is a mandatory feasibility check before finalizing paper selection."
+    },
+    {
+      "rank": 4,
+      "interaction_id": 3,
+      "prompt": "Comparison between ARIMA and ANN Models Used in Short-Term Wind Speed Forecasting but this comes under icdm right?",
+      "why_important": "This prompt helped me understand two critical exam rules simultaneously: (1) the paper must be in a verified CORE A* venue, not just any conference, and (2) comparison/benchmark papers are explicitly disallowed. I had incorrectly assumed this paper was in ICDM. Claude's fact-check revealed it was in APPEEC, an electrical engineering conference with no CORE ranking. This clarified how strictly the venue rule must be applied."
+    },
+    {
+      "rank": 5,
+      "interaction_id": 11,
+      "prompt": "these are the existing papers already chosen need apart from [list of 40+ taken papers]",
+      "why_important": "The exam uses a first-come first-select process where duplicate submissions are disqualified. Before finalising my selection I needed to confirm DynaMMo had not been taken by any classmate. This prompt directly addressed the uniqueness constraint. Claude's cross-referencing confirmed DynaMMo was available, which was a necessary final check before submitting the Google Form."
+    }
+  ],
+
+  "selected_paper": {
+    "title": "DynaMMo: Mining and Summarization of Coevolving Sequences with Missing Values",
+    "authors": ["Lei Li", "James McCann", "Nancy S. Pollard", "Christos Faloutsos"],
+    "venue": "ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD 2009)",
+    "year": 2009,
+    "pages": "507-516",
+    "doi": "10.1145/1557019.1557078",
+    "primary_method": "Linear Dynamical System (LDS) with Expectation-Maximization (EM) and Kalman Filter — ARIMA/time-series variant",
+    "exam_category": "ARIMA or time-series modeling and variants",
+    "core_ranking": "CORE A*",
+    "dataset": "CMU Motion Capture Database (mocap.cs.cmu.edu) — publicly available",
+    "reproducibility": "Fully reproducible on CPU-only laptop using NumPy and SciPy",
+    "official_code": "https://github.com/lileicc/dynammo"
+  },
+
+  "student_declaration": {
+    "statement": "I declare that this JSON file contains a complete and honest record of my LLM usage for Part A. All 12 interactions listed above represent the complete set of Claude conversations used during paper selection, feasibility assessment, and understanding. I have independently verified all key claims made by the LLM against primary sources including ACM Digital Library, Google Scholar, GitHub, and standard ML textbooks. I understand that I must be able to explain all submitted content independently in Part C without LLM assistance.",
+    "understanding_acknowledged": true,
+    "signature": "YOUR FULL NAME HERE",
+    "date": "2026-03-03"
+  }
+}
