@@ -1,0 +1,126 @@
+{
+  "student_metadata": {
+    "name": "Ashwin Sathiyamoorthy",
+    "roll_number": "230051",
+    "course": "Advanced Machine Learning",
+    "exam": "Mid-Semester Examination Part B",
+    "submission_date": "2026-03-11"
+  },
+  "llm_tools_used": [
+    {
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic"
+    }
+  ],
+  "full_llm_interaction_log": [
+    {
+      "interaction_id": 1,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Designing the imputation results figure to clearly show DynaMMo vs baselines",
+      "prompt": "I want a figure showing DynaMMo imputation quality versus baselines on 3 sensors. For each sensor I want 2 rows: (1) full time-series trace with all methods overlaid, (2) absolute error at every NaN position. What design choices make the comparison most readable and scientifically honest?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Suggested: use sensors with most missing values (sorted by mm.sum(axis=0)), show RMSE label in the legend of each line (not separately), and use absolute error in row 2 (not squared error) so scale is interpretable. All three suggestions were implemented.",
+      "student_verification": "Implemented the full 2x3 figure independently. Added orange block shading and the scatter plot (predicted vs true) from my own initiative beyond what was suggested.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.3"
+    },
+    {
+      "interaction_id": 2,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Choosing the right RMSE evaluation protocol to match the paper",
+      "prompt": "In the DynaMMo paper, is the RMSE computed over ALL positions (both observed and missing) or only over the missing positions? I want to match the paper's evaluation protocol exactly.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Confirmed RMSE is computed only over the missing positions (the mm=True set) not over all T*d entries. Computing over all positions would inflate the baselines' advantage since they perfectly reproduce the observed values.",
+      "student_verification": "Verified by re-reading the paper's experimental section which says 'we evaluate imputation accuracy on the missing entries only'. My rmse() function uses mask=mm throughout.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.3"
+    },
+    {
+      "interaction_id": 3,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Interpreting the per-sensor RMSE variation and what it reveals",
+      "prompt": "My DynaMMo results show per-sensor RMSE ranging from 0.155 to 0.282 across 8 sensors. What factors would cause this variation? Is higher RMSE on some sensors a bug, or does it reflect genuine differences in how much latent structure exists for each sensor?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified two drivers: (1) sensors with more missing values have higher RMSE simply because harder positions are included; (2) sensors with stronger loading on one of the two latent factors are easier to impute. Confirmed this is expected behaviour, not a bug.",
+      "student_verification": "Verified by comparing per-sensor RMSE against mm.sum(axis=0) (missing count) \u2014 sensors with more missing values consistently show higher RMSE, consistent with the explanation.",
+      "confidence_level": 4,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.3"
+    },
+    {
+      "interaction_id": 4,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Designing the predicted vs true scatter plot to show imputation quality geometrically",
+      "prompt": "I want to add a predicted-vs-true scatter plot for all 384 missing positions, comparing all three methods. What makes this plot scientifically informative beyond just reporting RMSE? What patterns in the scatter should I point the reader's attention to?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified: the diagonal y=x line as 'perfect imputation', systematic bias (scatter above/below diagonal) vs random noise (scatter around diagonal), and that mean fill would show vertical stripes (constant prediction for each sensor) while DynaMMo scatter should be tighter around the diagonal.",
+      "student_verification": "Implemented the scatter plot independently with equal aspect ratio and added the y=x reference line. The pattern descriptions (vertical stripes for mean fill) were verified by running the code and inspecting the actual plot.",
+      "confidence_level": 4,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.3"
+    },
+    {
+      "interaction_id": 5,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Writing a reproducibility checklist that is meaningful not just cosmetic",
+      "prompt": "What should be on a reproducibility checklist for a DynaMMo experiment that goes beyond just listing 'random seed set' and 'notebook runs top to bottom'? I want items that actually verify the key correctness properties of the experiment.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Suggested: verify X_true never passed to model, verify val RMSE has no NaN, verify DynaMMo beats both baselines, verify learned R values are all different (confirms per-sensor learning), verify best iteration < n_iter (early stopping actually triggered). All added to the checklist.",
+      "student_verification": "All checklist items are computed programmatically and printed as PASS/FAIL in the notebook \u2014 not just asserted without verification.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.3"
+    }
+  ],
+  "top_5_prompts": [
+    {
+      "rank": 1,
+      "interaction_id": 2,
+      "prompt": "In the DynaMMo paper, is RMSE computed over ALL positions or only over the missing positions? I want to match the paper's evaluation protocol exactly.",
+      "why_important": "Critical evaluation protocol question \u2014 computing RMSE over all positions would give misleading results; the correct protocol (missing only) is verified against the paper."
+    },
+    {
+      "rank": 2,
+      "interaction_id": 1,
+      "prompt": "I want a figure showing DynaMMo vs baselines on 3 sensors with 2 rows each: full trace overlay and absolute error at NaN positions. What design choices make this most readable?",
+      "why_important": "Shaped the 2x3 results figure structure and the three key design choices (top-N sensors, RMSE in legend, absolute not squared error)."
+    },
+    {
+      "rank": 3,
+      "interaction_id": 5,
+      "prompt": "What should be on a reproducibility checklist that actually verifies key correctness properties, not just cosmetic checks?",
+      "why_important": "Produced a programmatic checklist that verifies correctness properties (no leakage, no NaN, DynaMMo wins) rather than just formatting properties."
+    },
+    {
+      "rank": 4,
+      "interaction_id": 4,
+      "prompt": "What makes the predicted-vs-true scatter plot scientifically informative beyond reporting RMSE? What patterns should I point the reader to?",
+      "why_important": "The geometric interpretation of the scatter (diagonal, bias, vertical stripes for mean fill) made the final scatter plot figure analytically meaningful."
+    },
+    {
+      "rank": 5,
+      "interaction_id": 3,
+      "prompt": "My per-sensor RMSE ranges from 0.155 to 0.282. Is this a bug or genuine variation? What factors cause it?",
+      "why_important": "Confirmed the variation is expected behaviour (missing count + latent loading) rather than a bug \u2014 an important honest interpretation of the results."
+    }
+  ],
+  "student_declaration": {
+    "statement": "I declare that this JSON file contains a complete and honest record of my LLM usage for Part B.",
+    "understanding_acknowledged": true,
+    "signature": "Ashwin Sathiyamoorthy",
+    "date": "2026-03-11"
+  }
+}

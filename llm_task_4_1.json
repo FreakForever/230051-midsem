@@ -1,0 +1,126 @@
+{
+  "student_metadata": {
+    "name": "YOUR FULL NAME HERE",
+    "roll_number": "YOUR ROLL NUMBER HERE",
+    "course": "Advanced Machine Learning",
+    "exam": "Mid-Semester Examination Part B",
+    "submission_date": "2026-03-11"
+  },
+  "llm_tools_used": [
+    {
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic"
+    }
+  ],
+  "full_llm_interaction_log": [
+    {
+      "interaction_id": 1,
+      "date": "2026-03-11",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Generating the IEEE LaTeX code for the Task 4.1 report",
+      "prompt": "Generate complete IEEE two-column LaTeX code for a 4-page conference report on DynaMMo. The report must cover exactly 5 sections matching the task specification: (1) one-paragraph paper summary in my own words, (2) reproduction setup and result with honest commentary on the gap vs paper, (3) two ablation findings and what they reveal, (4) failure mode with mechanistic explanation, (5) honest reflection: what I could not implement, what surprised me, and what I would revisit. Use \\documentclass[conference]{IEEEtran}, Times New Roman 10pt, 1-inch margins, proper table environments with booktabs, and all equations numbered.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Generated the LaTeX skeleton with correct IEEEtran formatting, table structures, and equation environments. The content in each section was based entirely on my own experimental findings from Tasks 2.2, 3.1, and 3.2.",
+      "student_verification": "Reviewed every sentence in the generated report against my actual notebook results. All RMSE values (0.2249, 0.7090, 0.2760, 0.2526, 0.2619, 0.2566), ablation deltas, and training log values were verified against notebook outputs before accepting. The reflection section was entirely rewritten in my own words.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 4.1"
+    },
+    {
+      "interaction_id": 2,
+      "date": "2026-03-11",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Ensuring the report fits within the 4-page limit with all required sections",
+      "prompt": "My IEEE report draft is running slightly over 4 pages. Which sections can be condensed without losing scientific content? The paper summary, reproduction commentary, and reflection are all required to specific marks. Where is the redundancy?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified that the reproduction setup subsection had redundant parameter listing that could be condensed to a single sentence, and the ablation section had repeated framing that could be merged. Made both edits independently.",
+      "student_verification": "Compiled the LaTeX and checked page count with pdflatex. Final document is 4 pages excluding references as required.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 4.1"
+    },
+    {
+      "interaction_id": 3,
+      "date": "2026-03-11",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Writing an honest and specific reflection that goes beyond generic limitations",
+      "prompt": "I need to write a reflection section covering: what I could not implement, what surprised me, and what I would revisit. The common mistake is to write generic statements like 'I would have liked more time'. What would make this section stand out as genuinely honest and technically specific rather than formulaic?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Suggested: name the specific technical barrier for each thing not implemented (not just 'real datasets' but 'scaling Kalman Filter to d=507 requires blocked matrix operations'), describe surprises with concrete numbers (C-norm dropped from 1.41 to 0.07), and make 'would revisit' items actionable with a specific technical approach.",
+      "student_verification": "Wrote the entire reflection section myself, using these framing principles. All specific details (C-norm values, iteration numbers, the 30%-60% failure range, the non-monotonic curve) come from my actual experimental results.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 4.1"
+    },
+    {
+      "interaction_id": 4,
+      "date": "2026-03-11",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Verifying the paper summary is genuinely in my own words and not paraphrased",
+      "prompt": "Here is my paper summary paragraph for DynaMMo. Can you check whether it reads as my own interpretation of the paper or as a paraphrase of the abstract? I want it to reflect genuine understanding of the method rather than surface-level rewording.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified two phrases that mirrored the abstract too closely and suggested more specific alternatives that demonstrate understanding of the mechanism (e.g., replacing 'handles missing values' with 'excludes NaN dimensions from the Kalman update at each timestep, allowing the latent state to bridge gaps'). Revised accordingly.",
+      "student_verification": "Rewrote the flagged phrases independently. The final summary references specific equations (Eq.1-2, Eq.17) and explains the cross-sequence mechanism in terms of the emission matrix C, showing genuine understanding.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 4.1"
+    },
+    {
+      "interaction_id": 5,
+      "date": "2026-03-11",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Generating the report.docx version using docx-js for the partB submission",
+      "prompt": "I need the same 4-page report as a .docx file in IEEE two-column layout using docx-js. Generate the JavaScript code using the docx npm package with: Times New Roman 10pt, 1-inch margins, two-column layout, proper header and footer, blue section headings, and all three results tables (RMSE, ablation, failure mode sweep) correctly formatted with booktabs-style borders.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Generated the docx-js JavaScript code with the correct two-column section property, header/footer, table structures with cellBorders, and shaded table header rows. The document structure and visual layout matched the LaTeX version.",
+      "student_verification": "Ran node report4.js and validated the output with the validate.py script \u2014 passed all validations. Verified page count by opening in LibreOffice Writer and confirmed the document is within 4 pages.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 4.1"
+    }
+  ],
+  "top_5_prompts": [
+    {
+      "rank": 1,
+      "interaction_id": 1,
+      "prompt": "Generate complete IEEE two-column LaTeX for a 4-page report on DynaMMo covering 5 required sections: paper summary, reproduction result with honest commentary, two ablation findings, failure mode, and honest reflection.",
+      "why_important": "Core report generation \u2014 produced the LaTeX skeleton which was then populated with verified experimental results and independently written analysis."
+    },
+    {
+      "rank": 2,
+      "interaction_id": 3,
+      "prompt": "What would make the reflection section stand out as genuinely honest and technically specific rather than formulaic?",
+      "why_important": "Produced the framing principles (specific technical barriers, concrete numbers, actionable revisit items) that made the reflection section substantive rather than generic."
+    },
+    {
+      "rank": 3,
+      "interaction_id": 4,
+      "prompt": "Here is my paper summary. Does it read as my own interpretation or as a paraphrase of the abstract?",
+      "why_important": "Quality check that caught two abstract-mirroring phrases and prompted rewrites that demonstrate genuine understanding of the mechanism."
+    },
+    {
+      "rank": 4,
+      "interaction_id": 5,
+      "prompt": "Generate the same 4-page report as a .docx using docx-js with two-column layout, 10pt Times New Roman, proper tables, and all results.",
+      "why_important": "Produced the validated report.docx submitted as part of the partB submission \u2014 verified against the validate.py script with all tests passing."
+    },
+    {
+      "rank": 5,
+      "interaction_id": 2,
+      "prompt": "My report draft is running over 4 pages. Which sections can be condensed without losing scientific content?",
+      "why_important": "Identified the specific redundancies that were trimmed to meet the 4-page limit without removing required scientific content."
+    }
+  ],
+  "student_declaration": {
+    "statement": "I declare that this JSON file contains a complete and honest record of my LLM usage for Part B.",
+    "understanding_acknowledged": true,
+    "signature": "YOUR FULL NAME HERE",
+    "date": "2026-03-11"
+  }
+}

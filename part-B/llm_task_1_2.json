@@ -1,0 +1,126 @@
+{
+  "student_metadata": {
+    "name": "Ashwin Sathiyamoorthy",
+    "roll_number": "230051",
+    "course": "Advanced Machine Learning",
+    "exam": "Mid-Semester Examination Part B",
+    "submission_date": "2026-03-11"
+  },
+  "llm_tools_used": [
+    {
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic"
+    }
+  ],
+  "full_llm_interaction_log": [
+    {
+      "interaction_id": 1,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Identifying the core structural assumptions DynaMMo makes about the data",
+      "prompt": "What are the fundamental assumptions that DynaMMo makes about the input time series? I need to identify at least 4 distinct assumptions, each grounded in a specific part of the model (not just general ML assumptions), and for each one explain what would break if that assumption were violated.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified the four assumptions: (1) linearity of the LDS, (2) stationarity of A, C, Q, R, (3) low-rank shared latent structure (k << d), and (4) MCAR (Missing Completely At Random). Each came with a failure condition I could then verify against real scenarios.",
+      "student_verification": "Verified Assumption 1 against Eq.1-2 (linear Gaussian model). Assumption 3 against Section 2 problem definition which explicitly requires k shared factors. Assumption 4 against Section 3.2 which states observations are used 'as available' without any correction for non-random missingness.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.2"
+    },
+    {
+      "interaction_id": 2,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Understanding MCAR vs MAR vs MNAR in the context of DynaMMo",
+      "prompt": "DynaMMo's Kalman Filter excludes NaN dimensions from the update at each timestep. Does this implicitly assume MCAR (Missing Completely At Random), MAR (Missing At Random), or something else? What exactly would break if sensors failed in a way correlated with their own values \u2014 like a sensor failing precisely when pollution is very high?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Clarified that DynaMMo technically assumes MAR (missingness can depend on observed values at other times/sensors but not the missing value itself), but practically the implementation assumes MCAR because no missingness model is included. The pollution-high-sensor-failure example was exactly the failure case I used for Assumption 4.",
+      "student_verification": "Verified by re-reading Section 3.2 \u2014 there is no explicit missingness model or inverse probability weighting, confirming the MCAR implementation assumption.",
+      "confidence_level": 4,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.2"
+    },
+    {
+      "interaction_id": 3,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Understanding the stationarity assumption and what violations look like",
+      "prompt": "DynaMMo uses fixed A, C, Q, R matrices throughout the entire time series. This implies stationarity. What real-world sensor scenarios would violate this \u2014 and would the model fail silently or produce obvious errors?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "The seasonal shift example (sensors that change behaviour in summer vs winter) was exactly the kind of violation I cited for Assumption 2. The point about silent failure (RMSE degrades gradually rather than crashing) was useful for framing the limitation honestly.",
+      "student_verification": "Confirmed by checking that DynaMMo has no time-varying parameter model \u2014 the M-step computes global averages over all T timesteps with no temporal weighting.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.2"
+    },
+    {
+      "interaction_id": 4,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Formulating the failure condition for the low-rank assumption",
+      "prompt": "If the true number of latent factors in a multivariate time series is actually k_true = 10, but DynaMMo is run with k = 2, what happens to the imputation? Does C try to 'compress' all 10 factors into 2 dimensions, and if so, what is the statistical consequence?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "The explanation that C learns the best rank-2 approximation (in an EM sense) but residual variance from the remaining 8 factors leaks into R was exactly the failure condition I wrote for Assumption 3.",
+      "student_verification": "Verified by noting that R_new = (P_xx - C*P_xz^T)/T \u2014 if k is too small, the residuals P_xx - C*P_xz^T will be systematically large, inflating R and widening imputation uncertainty.",
+      "confidence_level": 4,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.2"
+    },
+    {
+      "interaction_id": 5,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Connecting each assumption to a specific failure experiment that could be run",
+      "prompt": "For each of the four DynaMMo assumptions (linearity, stationarity, low-rank structure, MCAR), design a minimal experiment that would empirically demonstrate the failure when the assumption is violated. Each experiment should be runnable on a synthetic dataset and produce a measurable RMSE degradation.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "The MCAR violation experiment (structured block dropout where multiple sensors fail simultaneously) became the direct basis for Task 3.2. The experiment design was refined by me to include the 10%-80% sweep.",
+      "student_verification": "Designed and ran the structured dropout experiment myself in Task 3.2. The experimental protocol (sweep missing rate, measure RMSE vs baselines) was my own design based on the conceptual direction from this interaction.",
+      "confidence_level": 4,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.2"
+    }
+  ],
+  "top_5_prompts": [
+    {
+      "rank": 1,
+      "interaction_id": 1,
+      "prompt": "What are the fundamental assumptions that DynaMMo makes about the input time series? I need at least 4 distinct assumptions, each grounded in a specific part of the model, with failure conditions.",
+      "why_important": "Core prompt that structured the entire Task 1.2 answer \u2014 identified all 4 assumptions with paper grounding."
+    },
+    {
+      "rank": 2,
+      "interaction_id": 5,
+      "prompt": "For each of the four DynaMMo assumptions, design a minimal experiment that would empirically demonstrate the failure when the assumption is violated.",
+      "why_important": "The MCAR violation experiment design seeded Task 3.2 \u2014 the structured dropout experiment ran in the notebook is a direct implementation of the conceptual design from this interaction."
+    },
+    {
+      "rank": 3,
+      "interaction_id": 2,
+      "prompt": "Does DynaMMo's Kalman Filter implicitly assume MCAR, MAR, or something else? What exactly would break if sensors failed correlated with their own values?",
+      "why_important": "Resolved the subtle MCAR vs MAR distinction and produced the precise failure mechanism description for Assumption 4."
+    },
+    {
+      "rank": 4,
+      "interaction_id": 4,
+      "prompt": "If the true number of latent factors is k_true = 10 but DynaMMo is run with k = 2, what happens to the imputation? Does residual variance leak into R?",
+      "why_important": "The 'residual variance leaks into R' explanation was the mechanistic failure condition I cited for Assumption 3 (low-rank structure)."
+    },
+    {
+      "rank": 5,
+      "interaction_id": 3,
+      "prompt": "DynaMMo uses fixed A, C, Q, R matrices \u2014 this implies stationarity. What real-world scenarios would violate this, and would the model fail silently?",
+      "why_important": "The seasonal shift example and silent failure point became the precise framing for Assumption 2 in my notebook."
+    }
+  ],
+  "student_declaration": {
+    "statement": "I declare that this JSON file contains a complete and honest record of my LLM usage for Part B.",
+    "understanding_acknowledged": true,
+    "signature": "YOUR FULL NAME HERE",
+    "date": "2026-03-11"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "student_metadata": {
+    "name": "Ashwin Sathiyamoorthy",
+    "roll_number": "230051",
+    "course": "Advanced Machine Learning",
+    "exam": "Mid-Semester Examination Part B",
+    "submission_date": "2026-03-11"
+  },
+  "llm_tools_used": [
+    {
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic"
+    }
+  ],
+  "full_llm_interaction_log": [
+    {
+      "interaction_id": 1,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Understanding the full pipeline of DynaMMo from raw input to final output",
+      "prompt": "I am reading the DynaMMo paper (Li et al., KDD 2009). Can you trace the complete pipeline from raw multivariate time series input all the way to the imputed output, naming every mathematical component in order and citing which paper equation each step corresponds to?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Gave me a skeleton of the 7-step pipeline (input representation, LDS model, initialisation, Kalman Filter, RTS Smoother, EM M-step, imputation projection) with equation numbers I could verify directly against the paper.",
+      "student_verification": "Cross-checked every equation number against the paper PDF. Confirmed Eq.1-2 for LDS model, Eq.3-7 for Kalman Filter, Eq.8-10 for RTS Smoother, Eq.11-16 for EM, Eq.17 for imputation.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.1"
+    },
+    {
+      "interaction_id": 2,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Clarifying the role of the observation mask in the Kalman update",
+      "prompt": "In DynaMMo's Kalman Filter step, what exactly happens at a timestep where some sensors are NaN? Does the model skip the entire timestep or only update using the observed dimensions? How does this connect to the innovation vector and Kalman gain equations?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Clarified that only the observed subset O_t enters the Kalman update \u2014 C_o = C[O_t, :], R_o = R[O_t, O_t], and the innovation is computed only over observed dims. This was the key Step 4 detail I needed.",
+      "student_verification": "Verified against paper Section 3.2 which explicitly states 'only observed dimensions participate in the likelihood and update'. Also checked by reading the innovation formula in Eq.5 carefully.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.1"
+    },
+    {
+      "interaction_id": 3,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Understanding what the RTS Smoother adds beyond the Kalman Filter",
+      "prompt": "Why is the RTS Smoother necessary in DynaMMo? What would happen to the imputation quality if you only used the Kalman Filter without the backward smoothing pass? Explain in terms of the information available at each timestep for filling in a gap.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "The explanation of 'one-sided vs two-sided context' \u2014 the Kalman Filter can only use past observations while the smoother uses the full sequence \u2014 gave me the right framing for Step 5 in my answer and directly informed the ablation I later ran.",
+      "student_verification": "Confirmed by checking Rauch et al. 1965 (the original RTS Smoother paper) and cross-referencing with paper Eq.8-10 which show the backward recursion.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.1"
+    },
+    {
+      "interaction_id": 4,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Confirming the EM M-step closed-form derivations",
+      "prompt": "In the DynaMMo EM M-step, what are the closed-form expressions for updating A, C, and R? Where do the sufficient statistics P_z, P_zz, and P_xz come from? Why is Q not updated in some implementations?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Confirmed the standard LDS M-step formulas: A_new = P_zz * P_z1^{-1}, C_new = P_xz * P_z^{-1}, R diagonal from residuals. The answer about Q also flagged the identifiability issue which I then investigated independently.",
+      "student_verification": "Verified all three update formulas against paper Eq.12, 13, 14. Also checked Roweis & Ghahramani 1999 Section 3 for the complete EM derivation.",
+      "confidence_level": 4,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.1"
+    },
+    {
+      "interaction_id": 5,
+      "date": "2026-03-08",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Articulating what makes DynaMMo different from per-sequence imputation methods",
+      "prompt": "DynaMMo paper claims it exploits cross-sequence correlation. How exactly does the LDS architecture achieve this \u2014 which parameter is responsible for cross-sequence information sharing and how does it flow during inference?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified C (emission matrix) as the cross-sequence sharing mechanism \u2014 all sensors project through a shared k-dimensional latent space, so imputing sensor j uses information from all other sensors at the same timestep via the shared latent state. This became the core of my Step 7 summary.",
+      "student_verification": "Verified by tracing through Eq.17: x_hat_{t,j} = [C * mu_s_t]_j shows that the latent state mu_s_t was computed using all observed sensors, so every sensor's imputation benefits from all others.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 1.1"
+    }
+  ],
+  "top_5_prompts": [
+    {
+      "rank": 1,
+      "interaction_id": 1,
+      "prompt": "I am reading the DynaMMo paper (Li et al., KDD 2009). Can you trace the complete pipeline from raw multivariate time series input all the way to the imputed output, naming every mathematical component in order and citing which paper equation each step corresponds to?",
+      "why_important": "Most impactful \u2014 structured my entire Task 1.1 answer into the 7-step format with precise paper equation references that the notebook required."
+    },
+    {
+      "rank": 2,
+      "interaction_id": 3,
+      "prompt": "Why is the RTS Smoother necessary in DynaMMo? What would happen to the imputation quality if you only used the Kalman Filter without the backward smoothing pass?",
+      "why_important": "Gave me the 'one-sided vs two-sided context' framing that became the core justification for Step 5 and directly seeded the Ablation 1 experiment in Task 3.1."
+    },
+    {
+      "rank": 3,
+      "interaction_id": 2,
+      "prompt": "In DynaMMo's Kalman Filter step, what exactly happens at a timestep where some sensors are NaN? Does the model skip the entire timestep or only update using the observed dimensions?",
+      "why_important": "Resolved the most technically subtle point in the paper \u2014 the partial update mechanism \u2014 which I then verified against Section 3.2 and implemented correctly."
+    },
+    {
+      "rank": 4,
+      "interaction_id": 5,
+      "prompt": "DynaMMo paper claims it exploits cross-sequence correlation. How exactly does the LDS architecture achieve this \u2014 which parameter is responsible for cross-sequence information sharing?",
+      "why_important": "Identified C as the cross-sequence sharing mechanism, which became the closing insight of my Step 7 and the explanation of why DynaMMo outperforms per-sequence baselines."
+    },
+    {
+      "rank": 5,
+      "interaction_id": 4,
+      "prompt": "In the DynaMMo EM M-step, what are the closed-form expressions for updating A, C, and R? Why is Q not updated in some implementations?",
+      "why_important": "Confirmed all three update formulas and flagged the Q identifiability issue \u2014 a detail the paper does not explain clearly \u2014 which I then investigated and fixed in my implementation."
+    }
+  ],
+  "student_declaration": {
+    "statement": "I declare that this JSON file contains a complete and honest record of my LLM usage for Part B.",
+    "understanding_acknowledged": true,
+    "signature": "YOUR FULL NAME HERE",
+    "date": "2026-03-11"
+  }
+}

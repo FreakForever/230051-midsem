@@ -1,0 +1,126 @@
+{
+  "student_metadata": {
+    "name": "Ashwin Sathiyamoorthy",
+    "roll_number": "230051",
+    "course": "Advanced Machine Learning",
+    "exam": "Mid-Semester Examination Part B",
+    "submission_date": "2026-03-11"
+  },
+  "llm_tools_used": [
+    {
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "provider": "Anthropic"
+    }
+  ],
+  "full_llm_interaction_log": [
+    {
+      "interaction_id": 1,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Debugging the C-collapse identifiability issue in EM training",
+      "prompt": "I am implementing DynaMMo's EM algorithm in numpy. After 8-10 iterations the emission matrix C collapses toward zero \u2014 its Frobenius norm goes from 1.41 to 0.07 over 30 iterations. The training log-likelihood rises for 8 iterations then decreases. Is this an implementation bug or a known LDS identifiability issue? What is the fix?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Diagnosed the problem as LDS identifiability collapse: when Q is updated freely, the M-step can achieve a better fit by routing all variance through R (setting A near identity, C near zero) since this solution has identical likelihood as the true parameterisation. Fixing Q = I was the correct solution.",
+      "student_verification": "Verified by running both versions: with Q updated freely (C collapses by iter 10) and with Q fixed (C stabilises and val RMSE converges properly). The fix produced correct behaviour. Also checked Roweis & Ghahramani 1999 Section 4 which discusses this issue.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.2"
+    },
+    {
+      "interaction_id": 2,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Fixing the val_rmse = NaN crash in early stopping",
+      "prompt": "My DynaMMo fit() method crashes with TypeError: cannot unpack non-iterable NoneType when best_params is None. This happens because val_rmse is NaN every iteration, so the val_rmse < best_val check never triggers. Why is val_true coming out as NaN when I extract it from X_true at NaN positions?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified the root cause: val_true was being read from X_miss (which has NaN there) rather than X_true (which has the actual values). The fix was to extract X_true_at_nan = X_true[mm] BEFORE calling fit(), not inside it from X_miss.",
+      "student_verification": "Confirmed the bug: print(np.isnan(X_true_at_nan).any()) returned True when extracted from X_miss and False when extracted from X_true. Fixed and verified the entire training loop runs without crashes.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.2"
+    },
+    {
+      "interaction_id": 3,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Designing the training evidence plots to clearly show genuine EM learning",
+      "prompt": "I want to produce a figure that definitively proves DynaMMo's EM is genuinely learning from X_miss and not just running through motions. What 4 plots together would constitute convincing evidence? Each plot should correspond to a different aspect of training: likelihood, validation quality, parameter change, and noise structure.",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified the 4-panel structure: (A) log-likelihood rising = E/M-step is working on observed data, (B) val RMSE dropping = imputation is genuinely improving, (C) parameter norm evolution = A and C are actually changing from initialisations, (D) learned R diagonal = each sensor's noise learned independently. This became the exact Cell 10 figure.",
+      "student_verification": "Implemented all 4 panels independently. Panel D (R diagonal comparison) was my own addition beyond the suggestion \u2014 showing the 4x range in learned noise levels was not suggested but I added it to strengthen the evidence.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.2"
+    },
+    {
+      "interaction_id": 4,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Understanding the lag-1 cross-covariance and its role in the M-step",
+      "prompt": "In the RTS Smoother, the lag-1 cross-covariance V_{t,t+1}^s = L_t * V_{t+1}^s is computed and stored. Why is this needed? I don't see it in the E-step equations 8-10 \u2014 where does it get used?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Clarified that V_{t,t+1}^s is needed specifically for computing P_zz = sum_t (V_{t-1,t}^s + mu_t^s * mu_{t-1}^{s,T}) in the M-step A update. Without it, the A_new estimate would be missing the cross-covariance term and would be biased.",
+      "student_verification": "Verified against paper Eq.14 and Shumway & Stoffer 1982 Table 1 which explicitly lists the lag-1 cross-covariance as a required sufficient statistic. Confirmed V_s1 is stored in the smoother and used in the M-step.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.2"
+    },
+    {
+      "interaction_id": 5,
+      "date": "2026-03-09",
+      "tool_name": "Claude",
+      "model": "Claude Sonnet 4.6",
+      "purpose": "Verifying the numerical stability of the Kalman Filter implementation",
+      "prompt": "My Kalman Filter sometimes produces a non-positive-definite V_{t|t} after many iterations, causing the RTS Smoother to fail with a linear algebra error. What numerical safeguards should I add to the Kalman Filter and what is the root cause of PD loss?",
+      "llm_response_used": "Partially",
+      "how_it_helped": "Identified three safeguards: (1) use pinv fallback when inv(S) fails for near-singular S, (2) clamp R diagonal entries at 1e-4 minimum to prevent R from going to zero, (3) use slogdet instead of log(det) for numerically stable log-likelihood computation. All three were implemented.",
+      "student_verification": "Implemented all three safeguards. Tested with extreme missing rates (80%) which can produce near-singular S_t when very few sensors are observed. Confirmed no crashes across the entire 10-80% sweep in Task 3.2.",
+      "confidence_level": 5,
+      "code_used_verbatim": false,
+      "task_tag": "Task 2.2"
+    }
+  ],
+  "top_5_prompts": [
+    {
+      "rank": 1,
+      "interaction_id": 1,
+      "prompt": "After 8-10 iterations the emission matrix C collapses toward zero. Is this an implementation bug or a known LDS identifiability issue? What is the fix?",
+      "why_important": "Most critical debugging interaction \u2014 identified the C-collapse identifiability problem and the Q=I fix that made the entire implementation work correctly."
+    },
+    {
+      "rank": 2,
+      "interaction_id": 2,
+      "prompt": "My DynaMMo fit() crashes because val_rmse is NaN every iteration and best_params stays None. Why is val_true coming out as NaN when I extract it from X_true at NaN positions?",
+      "why_important": "Fixed the crash caused by reading val_true from X_miss instead of X_true \u2014 a subtle data split bug that would have silently invalidated all results."
+    },
+    {
+      "rank": 3,
+      "interaction_id": 3,
+      "prompt": "What 4 plots together would constitute convincing evidence that DynaMMo's EM is genuinely learning from X_miss? Each should cover a different aspect: likelihood, validation quality, parameter change, noise structure.",
+      "why_important": "Produced the 4-panel training evidence figure structure that demonstrates real learning from 4 independent perspectives."
+    },
+    {
+      "rank": 4,
+      "interaction_id": 4,
+      "prompt": "The lag-1 cross-covariance V_{t,t+1}^s = L_t * V_{t+1}^s is computed in the smoother. Where exactly does it get used in the M-step?",
+      "why_important": "Clarified a paper detail glossed over in Eq.14 \u2014 without the lag-1 cross-covariance P_zz would be biased and A would be estimated incorrectly."
+    },
+    {
+      "rank": 5,
+      "interaction_id": 5,
+      "prompt": "My Kalman Filter sometimes produces non-positive-definite V_{t|t}. What numerical safeguards should I add and what is the root cause?",
+      "why_important": "The three safeguards (pinv fallback, R clamping, slogdet) prevented crashes across all missing rate conditions including the extreme 80% case in Task 3.2."
+    }
+  ],
+  "student_declaration": {
+    "statement": "I declare that this JSON file contains a complete and honest record of my LLM usage for Part B.",
+    "understanding_acknowledged": true,
+    "signature": "Ashwin Sathiyamoorthy",
+    "date": "2026-03-11"
+  }
+}
